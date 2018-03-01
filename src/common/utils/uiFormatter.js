@@ -1,4 +1,5 @@
 import moment from 'moment'
+import {toNumber, toBig} from "Loopring/common/formatter";
 
 export function getShortAddress(address) {
   if (typeof address == 'string') {
@@ -15,7 +16,7 @@ export function getFormatTime(seconds, style) {
 
 export function getSeconds(value, unit) {
   value = Number(value);
-  switch(unit){
+  switch (unit) {
     case 'second':
       return value;
     case 'minute':
@@ -23,14 +24,28 @@ export function getSeconds(value, unit) {
     case 'hour':
       return value * 3600;
     case 'day':
-      return value * 3600 *24;
+      return value * 3600 * 24;
     default:
       return value;
   }
 }
 
+
+export function formatAmount({amount, digits, precision}) {
+
+  amount = toBig(amount);
+  if(digits){
+    amount = amount.dividedBy('1e'+digits)
+  }
+  if(precision){
+    amount = amount.toFixed(precision)
+  }
+  return (typeof amount) !== 'string' ? amount.toString() : amount
+}
+
 export default {
   getShortAddress,
   getFormatTime,
-  getSeconds
+  getSeconds,
+  formatAmount
 }

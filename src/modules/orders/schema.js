@@ -61,7 +61,7 @@ const schema = [
       name:'amount',
       formatter:(item)=> {
         const token = window.CONFIG.getTokenBySymbol(item.originalOrder.tokenS)
-        return (toNumber(item.originalOrder.amountS)/Number('1e'+token.digits)).toFixed(token.precision)
+        return window.uiFormatter.formatAmount({amount:item.originalOrder.amountS,digits:token.digits,precision:token.precision})
       }
     },
     {
@@ -74,7 +74,7 @@ const schema = [
       name:'size',
       formatter:(item)=>{
         const token = window.CONFIG.getTokenBySymbol(item.originalOrder.tokenB)
-       return (toNumber(item.originalOrder.amountB)/Number('1e'+token.digits)).toFixed(token.precision)
+        return window.uiFormatter.formatAmount({amount:item.originalOrder.amountB,digits:token.digits,precision:token.precision})
       },
     },
   {
@@ -82,13 +82,13 @@ const schema = [
     name: 'lrcFee',
     formatter: (item) => {
       const token = window.CONFIG.getTokenBySymbol('LRC')
-      return (toNumber(item.originalOrder.amountB) / Number('1e' + token.digits)).toFixed(token.precision)
+      return window.uiFormatter.formatAmount({amount:item.originalOrder.lrcFee,digits:token.digits,precision:token.precision})
     },
   },
     {
       title:'Time',
       name:'timestamp',
-      formatter:(item)=> moment(item.originalOrder.timestamp).format('YYYY/MM/DD HH:mm:ss'),
+      formatter:(item)=> window.uiFormatter.getFormatTime(item.originalOrder.timestamp/1000),
     },
   ]
   export default schema
